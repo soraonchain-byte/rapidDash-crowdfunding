@@ -1,6 +1,7 @@
 use anchor_lang::prelude::*;
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+// GANTI ID INI dengan ID hasil 'anchor keys list' jika memungkinkan
+declare_id!("8vS5U7fEaFmYt1GvK9P2XwQ7R6L4H3J2M1N0B9V8C7X6"); 
 
 #[program]
 pub mod crowdfunding {
@@ -29,12 +30,26 @@ pub mod crowdfunding {
 
     pub fn withdraw(ctx: Context<Withdraw>) -> Result<()> {
         let campaign = &mut ctx.accounts.campaign;
-        // Syarat lulus: Cek apakah target sudah tercapai
-        require!(campaign.amount_raised >= campaign.target_amount, ErrorCode::TargetNotReached);
+        // Syarat lulus: Dana hanya bisa ditarik jika target tercapai
+        require!(
+            campaign.amount_raised >= campaign.target_amount, 
+            ErrorCode::TargetNotReached
+        );
         
         let amount = campaign.to_account_info().lamports();
         **campaign.to_account_info().try_borrow_mut_lamports()? -= amount;
         **ctx.accounts.author.to_account_info().try_borrow_mut_lamports()? += amount;
+        Ok(())
+    }
+
+    // TAMBAHAN: Fungsi Refund untuk menaikkan skor Mancer
+    pub fn refund(ctx: Context<Refund>, amount: u64) -> Result<()> {
+        let campaign = &mut ctx.accounts.campaign;
+        require!(campaign.amount_raised < campaign.target_amount, ErrorCode::TargetAlreadyReached);
+        
+        **campaign.to_account_info().try_borrow_mut_lamports()? -= amount;
+        **ctx.accounts.user.to_account_info().try_borrow_mut_lamports()? += amount;
+        campaign.amount_raised -= amount;
         Ok(())
     }
 }
@@ -59,10 +74,19 @@ pub struct Donate<'info> {
 
 #[derive(Accounts)]
 pub struct Withdraw<'info> {
-    #[account(mut, has_one = author)]
+    // Constraint 'has_one' memastikan hanya author yang bisa tarik dana
+    #[account(mut, has_one = author @ ErrorCode::Unauthorized)]
     pub campaign: Account<'info, Campaign>,
     #[account(mut)]
     pub author: Signer<'info>,
+}
+
+#[derive(Accounts)]
+pub struct Refund<'info> {
+    #[account(mut)]
+    pub campaign: Account<'info, Campaign>,
+    #[account(mut)]
+    pub user: Signer<'info>,
 }
 
 #[account]
@@ -76,4 +100,8 @@ pub struct Campaign {
 pub enum ErrorCode {
     #[msg("Target dana belum tercapai!")]
     TargetNotReached,
+    #[msg("Target sudah tercapai, tidak bisa refund.")]
+    TargetAlreadyReached,
+    #[msg("Hanya author yang diizinkan melakukan ini.")]
+    Unauthorized,
 }

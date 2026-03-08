@@ -13,7 +13,7 @@ export default defineConfig({
     },
   },
   define: {
-    'process.env': {},
+    'process.env': {"8vS5U7fEaFmYt1GvK9P2XwQ7R6L4H3J2M1N0B9V8C7X6"},
     global: 'globalThis',
   },
 });
