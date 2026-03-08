@@ -13,7 +13,7 @@ export default defineConfig({
     },
   },
   define: {
-    // PERBAIKAN: Format objek process.env harus memiliki Key & Value yang jelas
+    // PERBAIKAN: Format 'process.env' harus berupa objek dengan Key dan Value yang jelas
     'process.env': {
       VITE_PROGRAM_ID: "8vS5U7fEaFmYt1GvK9P2XwQ7R6L4H3J2M1N0B9V8C7X6"
     },
