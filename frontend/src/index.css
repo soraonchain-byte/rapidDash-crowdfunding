@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+/* ===== Design Tokens from Figma ===== */
+:root {
+  --color-bg-primary: #0B0C15;
+  --color-bg-secondary: #1A1F35;
+  --color-accent: #0DF246;
+  --color-accent-purple: #9945FF;
+  --color-text-primary: #F1F5F9;
+  --color-text-secondary: #94A3B8;
+  --color-border: rgba(13, 242, 70, 0.10);
+  --color-border-strong: rgba(13, 242, 70, 0.20);
+  --color-border-accent: rgba(13, 242, 70, 0.30);
+  --color-accent-bg: rgba(13, 242, 70, 0.10);
+  --color-accent-bg-strong: rgba(13, 242, 70, 0.20);
+  --color-glass-green: rgba(24, 52, 31, 0.60);
+  --color-glass-purple: rgba(154, 36, 233, 0.20);
+  --gradient-bg: radial-gradient(101.87% 261.99% at 50% 0%, #1A1F35 0%, #0B0C15 70%);
+  --gradient-card: linear-gradient(115deg, rgba(153, 69, 255, 0.10) 0%, rgba(20, 241, 149, 0.05) 100%);
+  --font-main: 'Space Grotesk', -apple-system, Roboto, Helvetica, sans-serif;
+  --glow-green: 0 0 10px rgba(13, 242, 70, 0.50);
+  --glow-border: 0 0 15px 0 rgba(13, 242, 70, 0.20);
+  --shadow-nav: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* ===== Reset & Base ===== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-main);
+  background: var(--gradient-bg);
+  color: var(--color-text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ===== Scrollbar Styling ===== */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(13, 242, 70, 0.20);
+  border-radius: 9999px;
+}
+
+/* ===== Wallet Adapter UI Overrides ===== */
+.wallet-adapter-button {
+  font-family: var(--font-main) !important;
+  background: var(--color-accent-bg-strong) !important;
+  border: 1px solid var(--color-border-strong) !important;
+  border-radius: 9999px !important;
+  color: var(--color-accent) !important;
+  font-weight: 700 !important;
+}
+.wallet-adapter-button:hover {
+  background: rgba(13, 242, 70, 0.30) !important;
+}
+.wallet-adapter-modal-wrapper {
+  font-family: var(--font-main) !important;
+  background: var(--color-bg-secondary) !important;
+  border: 1px solid var(--color-border) !important;
+}
